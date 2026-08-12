@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rx Study Hub — PTCE prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;800;900&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#E9EDE8;--ink:#15211D;--ink-soft:#4A5852;--label:#FCFBF7;
+    --green:#2C6A5B;--green-deep:#1E4C41;--amber:#C0741B;
+    --line:rgba(21,33,29,.12);--line-strong:rgba(21,33,29,.22);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--paper);color:var(--ink);
+    line-height:1.5;-webkit-font-smoothing:antialiased;padding:clamp(16px,4vw,48px);min-height:100vh}
+  .wrap{max-width:1100px;margin:0 auto}
+  .rx-slip{background:var(--label);border:1.5px solid var(--line-strong);border-radius:14px;overflow:hidden;
+    box-shadow:0 1px 0 rgba(255,255,255,.6) inset,0 18px 40px -28px rgba(21,33,29,.5)}
+  .rx-top{display:flex;align-items:center;gap:18px;padding:22px clamp(18px,3vw,30px);background:var(--green-deep);color:#EAF3EF}
+  .rx-mark{font-family:'Archivo',sans-serif;font-weight:900;font-size:44px;line-height:.8;letter-spacing:-.03em;
+    background:var(--amber);color:#fff;width:70px;height:70px;border-radius:12px;display:grid;place-items:center;flex:0 0 auto;
+    box-shadow:0 8px 20px -8px rgba(192,116,27,.7)}
+  .rx-mark span{transform:translateY(2px)}
+  .rx-mark sub{font-size:.42em;font-weight:800;transform:translateY(6px);margin-left:-2px}
+  .rx-title h1{font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(24px,4.6vw,38px);letter-spacing:-.01em;line-height:1}
+  .rx-title p{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.18em;color:#9FC4B8;margin-top:9px}
+  .rx-strip{display:grid;grid-template-columns:repeat(3,1fr);border-top:1.5px solid var(--line-strong)}
+  .rx-cell{padding:14px clamp(18px,3vw,30px);border-right:1.5px solid var(--line)}
+  .rx-cell:last-child{border-right:none}
+  .rx-cell .k{font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.16em;color:var(--ink-soft)}
+  .rx-cell .v{font-family:'Archivo',sans-serif;font-weight:800;font-size:20px;margin-top:3px}
+  .rx-cell .v small{font-weight:500;font-size:12px;color:var(--ink-soft);font-family:'Inter'}
+  .shelf-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:12px 20px;margin:34px 2px 16px}
+  .shelf-head h2{font-family:'Archivo',sans-serif;font-weight:800;font-size:15px;text-transform:uppercase;letter-spacing:.14em}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-left:auto}
+  .chip{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;
+    border:1.4px solid var(--line-strong);background:transparent;color:var(--ink-soft);padding:6px 12px;border-radius:999px;cursor:pointer;transition:.16s}
+  .chip:hover{border-color:var(--green);color:var(--green)}
+  .chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .chip:focus-visible{outline:2.5px solid var(--amber);outline-offset:2px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(288px,1fr));gap:16px}
+  .rx{position:relative;display:flex;text-decoration:none;color:inherit;background:var(--label);
+    border:1.5px solid var(--line-strong);border-radius:12px;overflow:hidden;
+    transition:transform .18s cubic-bezier(.2,.7,.3,1),box-shadow .18s;animation:rise .5s both}
+  .rx:hover{transform:translateY(-4px);box-shadow:0 20px 34px -22px rgba(21,33,29,.55)}
+  .rx:focus-visible{outline:3px solid var(--amber);outline-offset:3px}
+  .band{flex:0 0 10px;background:var(--band,var(--green))}
+  .rx-body{padding:16px 18px 14px;flex:1;display:flex;flex-direction:column;min-height:186px}
+  .rx-no{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--ink-soft);letter-spacing:.08em;display:flex;justify-content:space-between}
+  .rx-no .key{background:var(--paper);border:1.3px solid var(--line);border-radius:6px;width:22px;height:22px;display:grid;place-items:center;font-size:12px;color:var(--ink)}
+  .rx h3{font-family:'Archivo',sans-serif;font-weight:800;font-size:19px;line-height:1.12;letter-spacing:-.01em;margin:12px 0 7px}
+  .rx .dir{font-size:13.5px;color:var(--ink-soft);flex:1}
+  .rx-foot{display:flex;align-items:center;gap:8px;margin-top:14px;padding-top:11px;border-top:1.3px dashed var(--line-strong)}
+  .tag{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--green-deep);background:rgba(44,106,91,.1);padding:3px 8px;border-radius:5px}
+  .fill{margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--amber);display:flex;align-items:center;gap:5px}
+  .fill svg{transition:transform .18s}
+  .rx:hover .fill svg{transform:translateX(4px)}
+  .rx.hidden{display:none}
+  footer{margin:36px 2px 0;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);letter-spacing:.05em;display:flex;flex-wrap:wrap;gap:6px 16px}
+  footer b{color:var(--ink);font-weight:600}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+  .rx:nth-child(1){animation-delay:.03s}.rx:nth-child(2){animation-delay:.06s}.rx:nth-child(3){animation-delay:.09s}
+  .rx:nth-child(4){animation-delay:.12s}.rx:nth-child(5){animation-delay:.15s}.rx:nth-child(6){animation-delay:.18s}
+  .rx:nth-child(7){animation-delay:.21s}.rx:nth-child(8){animation-delay:.24s}.rx:nth-child(n+9){animation-delay:.27s}
+  @media (max-width:560px){.rx-strip{grid-template-columns:1fr 1fr}
+    .rx-cell:nth-child(3){grid-column:1/-1;border-right:none;border-top:1.5px solid var(--line)}.chips{margin-left:0;width:100%}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="rx-slip">
+    <div class="rx-top">
+      <div class="rx-mark"><span>R<sub>x</sub></span></div>
+      <div class="rx-title"><h1>Rx Study Hub</h1><p>PTCE prep &middot; one shelf, everything you drill</p></div>
+    </div>
+    <div class="rx-strip">
+      <div class="rx-cell"><div class="k">Sig</div><div class="v">Study daily <small>as directed</small></div></div>
+      <div class="rx-cell"><div class="k">Tools on shelf</div><div class="v">15 <small>schedules · names · math · review</small></div></div>
+      <div class="rx-cell"><div class="k">Shortcut</div><div class="v">Press 1–9 <small>filter to narrow</small></div></div>
+    </div>
+  </div>
+
+  <div class="shelf-head">
+    <h2>The shelf</h2>
+    <div class="chips" role="group" aria-label="Filter tools by type">
+      <button class="chip" data-filter="all" aria-pressed="true">All</button>
+      <button class="chip" data-filter="schedules" aria-pressed="false">Schedules</button>
+      <button class="chip" data-filter="names" aria-pressed="false">Drug names</button>
+      <button class="chip" data-filter="math" aria-pressed="false">Math</button>
+      <button class="chip" data-filter="review" aria-pressed="false">Review</button>
+    </div>
+  </div>
+
+  <div class="grid" id="grid">
+
+    <a class="rx" href="https://ashgrg1.github.io/ptcb-wholedash/" data-type="schedules" style="--band:#3A5A78">
+      <div class="band"></div><div class="rx-body">
+      <div class="rx-no"><span>RX № 3-01</span><span class="key"></span></div>
+      <h3>Controlled Substance Schedules</h3>
+      <p class="dir">Five schedules, five words — the mnemonic trainer for CI through CV.</p>
+      <div class="rx-foot"><span class="tag">Mnemonics</span><span class="fill">Fill <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></div></a>
+
+    <a class="rx" href="https://ashgrg1.github.io/dea-9/" data-type="schedules" style="--band:#3A5A78">
+      <div class="band"></div><div class="rx-body">
+      <div class="rx-no"><span>RX № 3-02</span><span class="key"></span></div>
+      <h3>Schedule Sorter Game</h3>
+      <p class="dir">Sort drugs into the right DEA schedule against the clock.</p>
+      <div class="rx-foot"><span class="tag">Game</span><span class="fill">Fill <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></div></a>
+
+    <a class="rx" href="https://ashgrg1.github.io/ptcb-fulltest/" data-type="schedules review" style="--band:#3A5A78">
+      <div class="band"></div><div class="rx-body">
+      <div class="rx-no"><span>RX № 3-03</span><span class="key"></span></div>
+      <h3>DEA Schedules — Full Test</h3>
+      <p class="dir">The full DEA schedule test suite — mixed drills from end to end.</p>
+      <div class="rx-foot"><span class="tag">Test</span><span class="fill">Fill <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></div></a>
+
+    <a class="rx" href="https://ashgrg1.github.io/type-ii-/" data-type="schedules" style="--band:#3A5A78">
+      <div class="band"></div><div class="rx-body">
+      <div class="rx-no"><span>RX № 3-04</span><span class="key"></span></div>
+      <h3>Schedule II — Yes or No?</h3>
+      <p class="dir">Rapid-fire calls: is this drug a CII? Yes or no.</p>
+      <div class="rx-foot"><span class="tag">Quiz</span><span class="fill">Fill <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></div></a>
+
+    <a class="rx" href="https://ashgrg1.github.io/scheduleiii-/" data-type="schedules" style="--band:#3A5A78">
+      <div class="band"></div><div class="rx-body">
+      <div class="rx-no"><span>RX № 3-05</span><span class="key"></span></div>
+      <h3>Schedule III — Yes or No?</h3>
+      <p class="dir">Rapid-fire calls: is this drug a CIII? Yes or no.</p>
+      <div class="rx-foot"><span class="tag">Quiz</span><span class="fill">Fill <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></div></a>
+
+    <a class="rx" href="https://ashgrg1.github.io/ptcb-hardwords/" data-type="schedules names" style="--band:#3A5A78">
+      <div class="band"></div><div class="rx-body">
+      <div class="rx-no"><span>RX № 3-06</span><span class="key"></span></div>
+      <h3>The Tough Six</h3>
+      <p class="dir">Class first, then schedule — cleaner hooks for the six that trip you up.</p>
+      <div class="rx-foot"><span class="tag">Mnemonics</span><span class="fill">Fill <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></div></a>
+
+    <a class="rx" href="https://ashgrg1.github.io/ptcb-generic/" data-type="names" style="--band:#9A4E2C">
+      <div class="band"></div><div class="rx-body">
+      <div class="rx-no"><span>RX № 4-01</span><span class="key"></span></div>
+      <h3>Top Drugs: Brand ↔ Generic</h3>
+      <p class="dir">Top drugs by class — flip cards with voice, plus a brand/generic match game.</p>
+      <div class="rx-foot"><span class="tag">Flashcards</span><span class="tag">Game</span><span class="fill">Fill <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></div></a>
+
+    <a class="rx" href="https://ashgrg1.github.io/ptcb-highalert/" data-type="names" style="--band:#9A4E2C">
+      <div class="band"></div><div class="rx-body">
+      <div class="rx-no"><span>RX № 4-02</span><span class="key"></span></div>
+      <h3>High-Alert &amp; LASA Cards</h3>
+      <p class="dir">Confusable name pairs split by syllable, with pronunciation and voice.</p>
+      <div class="rx-foot"><span class="tag">Flashcards</span><span class="tag">Voice</span><span class="fill">Fill <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></div></a>
+
+    <a class="rx" href="https://ashgrg1.github.io/ptcb-highalert-vol/" data-type="names" style="--band:#9A4E2C">
+      <div class="band"></div><div class="rx-body">
+      <div class="rx-no"><span>RX № 4-03</span><span class="key"></span></div>
+      <h3>High-Alert &amp; LASA — Vol. 2</h3>
+      <p class="dir">More high-alert and look-alike / sound-alike pairs to drill.</p>
+      <div class="rx-foot"><span class="tag">Flashcards</span><span class="tag">Voice</span><span class="fill">Fill <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></div></a>
+
+    <a class="rx" href="https://ashgrg1.github.io/ptcb-class/" data-type="names" style="--band:#9A4E2C">
+      <div class="band"></div><div class="rx-body">
+      <div class="rx-no"><span>RX № 4-04</span><span class="key"></span></div>
+      <h3>Drug Name Endings</h3>
+      <p class="dir">Stems and endings by drug class, with pet mnemonics and a cheat sheet.</p>
+      <div class="rx-foot"><span class="tag">Cheat sheet</span><span class="fill">Fill <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></div></a>
+
+    <a class="rx" href="https://ashgrg1.github.io/drug-secret-/" data-type="names" style="--band:#9A4E2C">
+      <div class="band"></div><div class="rx-body">
+      <div class="rx-no"><span>RX № 4-05</span><span class="key"></span></div>
+      <h3>The Drug Name Decoder</h3>
+      <p class="dir">Read what a drug name is telling you straight from its stem.</p>
+      <div class="rx-foot"><span class="tag">Reference</span><span class="fill">Fill <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></div></a>
+
+    <a class="rx" href="https://ashgrg1.github.io/math-trainer/" data-type="math" style="--band:#2C6A5B">
+      <div class="band"></div><div class="rx-body">
+      <div class="rx-no"><span>RX № 5-01</span><span class="key"></span></div>
+      <h3>Pharmacy Math Trainer</h3>
+      <p class="dir">Dosage, ratios, alligation, days-supply — endless timed reps.</p>
+      <div class="rx-foot"><span class="tag">Practice</span><span class="fill">Fill <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></div></a>
+
+    <a class="rx" href="https://ashgrg1.github.io/math-drill/" data-type="math" style="--band:#2C6A5B">
+      <div class="band"></div><div class="rx-body">
+      <div class="rx-no"><span>RX № 5-02</span><span class="key"></span></div>
+      <h3>Pharmacy Math Drill</h3>
+      <p class="dir">Quick-fire math drills to keep the calculations sharp.</p>
+      <div class="rx-foot"><span class="tag">Drill</span><span class="fill">Fill <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></div></a>
+
+    <a class="rx" href="https://ashgrg1.github.io/ptcb-whole/" data-type="review" style="--band:#6E4A6B">
+      <div class="band"></div><div class="rx-body">
+      <div class="rx-no"><span>RX № 6-01</span><span class="key"></span></div>
+      <h3>PTCB Flashcards</h3>
+      <p class="dir">General flashcards spanning every exam domain.</p>
+      <div class="rx-foot"><span class="tag">Flashcards</span><span class="fill">Fill <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></div></a>
+
+    <a class="rx" href="https://ashgrg1.github.io/ptcb-guide/" data-type="review" style="--band:#6E4A6B">
+      <div class="band"></div><div class="rx-body">
+      <div class="rx-no"><span>RX № 6-02</span><span class="key"></span></div>
+      <h3>Passing the PTCE — Study Plan</h3>
+      <p class="dir">How to structure your run at the exam, start to finish.</p>
+      <div class="rx-foot"><span class="tag">Plan</span><span class="fill">Fill <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></div></a>
+
+  </div>
+
+  <footer>
+    <span><b>Rx Study Hub</b> · ashgrg1.github.io/ptcb-rxstudyhub</span>
+    <span>Tip: number keys open a tool · chips narrow the shelf</span>
+  </footer>
+</div>
+
+<script>
+  const chips=document.querySelectorAll('.chip');
+  const cards=[...document.querySelectorAll('.rx')];
+  function renumber(){
+    const visible=cards.filter(c=>!c.classList.contains('hidden'));
+    cards.forEach(c=>{const k=c.querySelector('.key');if(k){k.textContent='';k.style.visibility='hidden';}});
+    visible.slice(0,9).forEach((c,i)=>{const k=c.querySelector('.key');if(k){k.textContent=i+1;k.style.visibility='visible';}});
+  }
+  chips.forEach(chip=>{chip.addEventListener('click',()=>{
+    chips.forEach(c=>c.setAttribute('aria-pressed','false'));
+    chip.setAttribute('aria-pressed','true');
+    const f=chip.dataset.filter;
+    cards.forEach(card=>{
+      const show=f==='all'||card.dataset.type.split(' ').includes(f);
+      card.classList.toggle('hidden',!show);
+    });
+    renumber();
+  });});
+  document.addEventListener('keydown',e=>{
+    if(e.target.tagName==='INPUT'||e.metaKey||e.ctrlKey||e.altKey)return;
+    const n=parseInt(e.key,10);
+    if(n>=1&&n<=9){const v=cards.filter(c=>!c.classList.contains('hidden'));if(v[n-1])window.location.href=v[n-1].getAttribute('href');}
+  });
+  renumber();
+</script>
+</body>
+</html>
