@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rx Study Hub — PTCE prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;800;900&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#E9EDE8;
+    --ink:#15211D;
+    --ink-soft:#4A5852;
+    --label:#FCFBF7;
+    --green:#2C6A5B;
+    --green-deep:#1E4C41;
+    --amber:#C0741B;
+    --line:rgba(21,33,29,.12);
+    --line-strong:rgba(21,33,29,.22);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',system-ui,sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    padding:clamp(16px,4vw,48px);
+    min-height:100vh;
+  }
+  .wrap{max-width:1040px;margin:0 auto}
+
+  /* ---------- Masthead: a prescription label header ---------- */
+  .rx-slip{
+    background:var(--label);
+    border:1.5px solid var(--line-strong);
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 1px 0 rgba(255,255,255,.6) inset, 0 18px 40px -28px rgba(21,33,29,.5);
+  }
+  .rx-top{
+    display:flex;align-items:center;gap:18px;
+    padding:22px clamp(18px,3vw,30px);
+    background:var(--green-deep);
+    color:#EAF3EF;
+  }
+  .rx-mark{
+    font-family:'Archivo',sans-serif;font-weight:900;
+    font-size:44px;line-height:.8;letter-spacing:-.03em;
+    background:var(--amber);color:#fff;
+    width:70px;height:70px;border-radius:12px;
+    display:grid;place-items:center;flex:0 0 auto;
+    box-shadow:0 8px 20px -8px rgba(192,116,27,.7);
+  }
+  .rx-mark span{transform:translateY(2px)}
+  .rx-mark sub{font-size:.42em;font-weight:800;transform:translateY(6px);margin-left:-2px}
+  .rx-title h1{
+    font-family:'Archivo',sans-serif;font-weight:800;
+    font-size:clamp(24px,4.6vw,38px);letter-spacing:-.01em;line-height:1;
+  }
+  .rx-title p{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:500;
+    text-transform:uppercase;letter-spacing:.18em;color:#9FC4B8;margin-top:9px;
+  }
+  .rx-strip{
+    display:grid;grid-template-columns:repeat(3,1fr);
+    border-top:1.5px solid var(--line-strong);
+  }
+  .rx-cell{
+    padding:14px clamp(18px,3vw,30px);
+    border-right:1.5px solid var(--line);
+  }
+  .rx-cell:last-child{border-right:none}
+  .rx-cell .k{
+    font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;
+    text-transform:uppercase;letter-spacing:.16em;color:var(--ink-soft);
+  }
+  .rx-cell .v{
+    font-family:'Archivo',sans-serif;font-weight:800;font-size:20px;margin-top:3px;
+  }
+  .rx-cell .v small{font-weight:500;font-size:12px;color:var(--ink-soft);font-family:'Inter'}
+
+  /* ---------- Filter chips ---------- */
+  .shelf-head{
+    display:flex;flex-wrap:wrap;align-items:baseline;gap:12px 20px;
+    margin:34px 2px 16px;
+  }
+  .shelf-head h2{
+    font-family:'Archivo',sans-serif;font-weight:800;font-size:15px;
+    text-transform:uppercase;letter-spacing:.14em;
+  }
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-left:auto}
+  .chip{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;
+    text-transform:uppercase;letter-spacing:.08em;
+    border:1.4px solid var(--line-strong);background:transparent;color:var(--ink-soft);
+    padding:6px 12px;border-radius:999px;cursor:pointer;transition:.16s;
+  }
+  .chip:hover{border-color:var(--green);color:var(--green)}
+  .chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .chip:focus-visible{outline:2.5px solid var(--amber);outline-offset:2px}
+
+  /* ---------- Tool cards: prescription labels ---------- */
+  .grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(288px,1fr));
+    gap:16px;
+  }
+  .rx{
+    position:relative;display:flex;text-decoration:none;color:inherit;
+    background:var(--label);border:1.5px solid var(--line-strong);border-radius:12px;
+    overflow:hidden;transition:transform .18s cubic-bezier(.2,.7,.3,1),box-shadow .18s;
+    animation:rise .5s both;
+  }
+  .rx:hover{transform:translateY(-4px);box-shadow:0 20px 34px -22px rgba(21,33,29,.55)}
+  .rx:focus-visible{outline:3px solid var(--amber);outline-offset:3px}
+  .band{flex:0 0 10px;background:var(--band,var(--green))}
+  .rx-body{padding:16px 18px 14px;flex:1;display:flex;flex-direction:column;min-height:184px}
+  .rx-no{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;
+    color:var(--ink-soft);letter-spacing:.08em;display:flex;justify-content:space-between;
+  }
+  .rx-no .key{
+    background:var(--paper);border:1.3px solid var(--line);border-radius:6px;
+    width:22px;height:22px;display:grid;place-items:center;font-size:12px;color:var(--ink);
+  }
+  .rx h3{
+    font-family:'Archivo',sans-serif;font-weight:800;font-size:19.5px;
+    line-height:1.12;letter-spacing:-.01em;margin:12px 0 7px;
+  }
+  .rx .dir{font-size:13.5px;color:var(--ink-soft);flex:1}
+  .rx-foot{
+    display:flex;align-items:center;gap:8px;margin-top:14px;
+    padding-top:11px;border-top:1.3px dashed var(--line-strong);
+  }
+  .tag{
+    font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;
+    text-transform:uppercase;letter-spacing:.1em;color:var(--green-deep);
+    background:rgba(44,106,91,.1);padding:3px 8px;border-radius:5px;
+  }
+  .fill{
+    margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;
+    text-transform:uppercase;letter-spacing:.1em;color:var(--amber);
+    display:flex;align-items:center;gap:5px;
+  }
+  .fill svg{transition:transform .18s}
+  .rx:hover .fill svg{transform:translateX(4px)}
+  .rx.hidden{display:none}
+
+  /* refill dots as a quiet signature */
+  .refills{display:flex;gap:4px;margin-top:2px}
+  .refills i{width:6px;height:6px;border-radius:50%;background:var(--band,var(--green));opacity:.4}
+
+  footer{
+    margin:36px 2px 0;font-family:'IBM Plex Mono',monospace;
+    font-size:11px;color:var(--ink-soft);letter-spacing:.05em;
+    display:flex;flex-wrap:wrap;gap:6px 16px;
+  }
+  footer b{color:var(--ink);font-weight:600}
+
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+  .rx:nth-child(1){animation-delay:.04s}.rx:nth-child(2){animation-delay:.1s}
+  .rx:nth-child(3){animation-delay:.16s}.rx:nth-child(4){animation-delay:.22s}
+  .rx:nth-child(5){animation-delay:.28s}.rx:nth-child(6){animation-delay:.34s}
+
+  @media (max-width:560px){
+    .rx-strip{grid-template-columns:1fr 1fr}
+    .rx-cell:nth-child(3){grid-column:1/-1;border-right:none;border-top:1.5px solid var(--line)}
+    .chips{margin-left:0;width:100%}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important;scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Masthead -->
+  <div class="rx-slip">
+    <div class="rx-top">
+      <div class="rx-mark"><span>R<sub>x</sub></span></div>
+      <div class="rx-title">
+        <h1>Rx Study Hub</h1>
+        <p>PTCE prep &middot; one shelf, everything you drill</p>
+      </div>
+    </div>
+    <div class="rx-strip">
+      <div class="rx-cell"><div class="k">Sig</div><div class="v">Study daily <small>as directed</small></div></div>
+      <div class="rx-cell"><div class="k">Tools on shelf</div><div class="v">6 <small>flashcards · games · math</small></div></div>
+      <div class="rx-cell"><div class="k">Shortcut</div><div class="v">Press 1–6 <small>to open a tool</small></div></div>
+    </div>
+  </div>
+
+  <!-- Filter -->
+  <div class="shelf-head">
+    <h2>The shelf</h2>
+    <div class="chips" role="group" aria-label="Filter tools by type">
+      <button class="chip" data-filter="all" aria-pressed="true">All</button>
+      <button class="chip" data-filter="cards" aria-pressed="false">Flashcards</button>
+      <button class="chip" data-filter="game" aria-pressed="false">Games</button>
+      <button class="chip" data-filter="math" aria-pressed="false">Math</button>
+      <button class="chip" data-filter="law" aria-pressed="false">Law</button>
+    </div>
+  </div>
+
+  <!-- Tools -->
+  <div class="grid" id="grid">
+
+    <a class="rx" href="./dea-schedule-mnemonics.html" data-type="law cards" style="--band:#3A5A78">
+      <div class="band"></div>
+      <div class="rx-body">
+        <div class="rx-no"><span>RX № 2-011</span><span class="key">1</span></div>
+        <h3>DEA Schedule Mnemonics</h3>
+        <p class="dir">Lock in the controlled-substance schedules: HELP ME, MOCHA, BACK-T, VAST-AX, LLC.</p>
+        <div class="rx-foot"><span class="tag">Mnemonics</span>
+          <span class="fill">Fill <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </div>
+      </div>
+    </a>
+
+    <a class="rx" href="./pharmacy-math-trainer.html" data-type="math" style="--band:#2C6A5B">
+      <div class="band"></div>
+      <div class="rx-body">
+        <div class="rx-no"><span>RX № 2-012</span><span class="key">2</span></div>
+        <h3>Pharmacy Math Trainer</h3>
+        <p class="dir">Dosage calc, ratios, alligation, days-supply — timed reps until the math is automatic.</p>
+        <div class="rx-foot"><span class="tag">Practice</span>
+          <span class="fill">Fill <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </div>
+      </div>
+    </a>
+
+    <a class="rx" href="./federal-law-flashcards.html" data-type="law game cards" style="--band:#7A5230">
+      <div class="band"></div>
+      <div class="rx-body">
+        <div class="rx-no"><span>RX № 2-013</span><span class="key">3</span></div>
+        <h3>Federal Law Flashcards</h3>
+        <p class="dir">Federal pharmacy law cards plus the DEA schedule sorter game — study and quiz modes.</p>
+        <div class="rx-foot"><span class="tag">Flashcards</span><span class="tag">Game</span>
+          <span class="fill">Fill <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </div>
+      </div>
+    </a>
+
+    <a class="rx" href="./high-alert-lasa-syllable-cards.html" data-type="cards" style="--band:#B4532E">
+      <div class="band"></div>
+      <div class="rx-body">
+        <div class="rx-no"><span>RX № 2-014</span><span class="key">4</span></div>
+        <h3>High-Alert &amp; LASA Cards</h3>
+        <p class="dir">Confusable name pairs split by syllable with pronunciation and “hear both” voice buttons.</p>
+        <div class="rx-foot"><span class="tag">Flashcards</span><span class="tag">Voice</span>
+          <span class="fill">Fill <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </div>
+      </div>
+    </a>
+
+    <a class="rx" href="./high-alert-medications-cards.html" data-type="cards" style="--band:#6E4A6B">
+      <div class="band"></div>
+      <div class="rx-body">
+        <div class="rx-no"><span>RX № 2-015</span><span class="key">5</span></div>
+        <h3>High-Alert Medications</h3>
+        <p class="dir">25 ISMP high-alert drugs — syllables, pronunciation, why it’s high-alert, and the safeguard.</p>
+        <div class="rx-foot"><span class="tag">Flashcards</span><span class="tag">Voice</span>
+          <span class="fill">Fill <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </div>
+      </div>
+    </a>
+
+    <a class="rx" href="./top-drugs-brand-generic.html" data-type="cards game" style="--band:#C0741B">
+      <div class="band"></div>
+      <div class="rx-body">
+        <div class="rx-no"><span>RX № 2-016</span><span class="key">6</span></div>
+        <h3>Top Drugs: Brand ↔ Generic</h3>
+        <p class="dir">131 top drugs by class — flip cards with voice, plus a brand/generic match game.</p>
+        <div class="rx-foot"><span class="tag">Flashcards</span><span class="tag">Game</span>
+          <span class="fill">Fill <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+  <footer>
+    <span><b>Rx Study Hub</b> · ashgrg1.github.io</span>
+    <span>Tip: 1–6 opens a tool · filter chips narrow the shelf</span>
+  </footer>
+</div>
+
+<script>
+  // Filter chips
+  const chips = document.querySelectorAll('.chip');
+  const cards = [...document.querySelectorAll('.rx')];
+  chips.forEach(chip=>{
+    chip.addEventListener('click',()=>{
+      chips.forEach(c=>c.setAttribute('aria-pressed','false'));
+      chip.setAttribute('aria-pressed','true');
+      const f = chip.dataset.filter;
+      cards.forEach(card=>{
+        const show = f==='all' || card.dataset.type.split(' ').includes(f);
+        card.classList.toggle('hidden',!show);
+      });
+    });
+  });
+
+  // Number keys 1–6 open the Nth visible tool
+  document.addEventListener('keydown',e=>{
+    if(e.target.tagName==='INPUT'||e.metaKey||e.ctrlKey||e.altKey) return;
+    const n = parseInt(e.key,10);
+    if(n>=1 && n<=9){
+      const visible = cards.filter(c=>!c.classList.contains('hidden'));
+      if(visible[n-1]) window.location.href = visible[n-1].getAttribute('href');
+    }
+  });
+</script>
+</body>
+</html>
